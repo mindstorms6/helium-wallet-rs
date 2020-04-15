@@ -10,6 +10,10 @@ pub mod info;
 pub mod pay;
 pub mod verify;
 
+pub trait CmdRunner {
+    fn run(&self, opts: Opts) -> Result;
+}
+
 arg_enum! {
     #[derive(Debug)]
     enum OutputFormat {

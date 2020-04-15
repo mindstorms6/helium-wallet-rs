@@ -5,6 +5,7 @@ use crate::{
 use helium_api::{Client, Hotspot};
 use prettytable::{format, Table};
 use structopt::StructOpt;
+use super::CmdRunner;
 
 /// Get the hotspots for a wallet
 #[derive(Debug, StructOpt)]
@@ -14,8 +15,8 @@ pub struct Cmd {
     addresses: Vec<String>,
 }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         let client = Client::new_with_base_url(api_url());
         let mut results: Vec<(String, Result<Vec<Hotspot>>)> =
             Vec::with_capacity(self.addresses.len());

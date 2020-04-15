@@ -16,8 +16,9 @@ pub struct Cmd {
     addresses: Vec<String>,
 }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+use super::CmdRunner;
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         let client = Client::new_with_base_url(api_url());
         let mut results = Vec::with_capacity(self.addresses.len());
         for address in collect_addresses(opts.files, self.addresses.clone())? {

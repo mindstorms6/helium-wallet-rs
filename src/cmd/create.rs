@@ -8,6 +8,7 @@ use crate::{
 };
 use std::{fs::OpenOptions, path::PathBuf};
 use structopt::StructOpt;
+use super::CmdRunner;
 
 #[derive(Debug, StructOpt)]
 /// Create a new wallet
@@ -64,8 +65,8 @@ pub struct Sharded {
     seed: bool,
 }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         match self {
             Cmd::Basic(cmd) => cmd.run(opts),
             Cmd::Sharded(cmd) => cmd.run(opts),
@@ -73,8 +74,8 @@ impl Cmd {
     }
 }
 
-impl Basic {
-    pub fn run(&self, _opts: Opts) -> Result {
+impl CmdRunner for Basic {
+    fn run(&self, opts: Opts) -> Result {
         let seed_words = if self.seed {
             Some(get_seed_words()?)
         } else {
@@ -98,8 +99,8 @@ impl Basic {
     }
 }
 
-impl Sharded {
-    pub fn run(&self, _opts: Opts) -> Result {
+impl CmdRunner for Sharded {
+    fn run(&self, opts: Opts) -> Result {
         let seed_words = if self.seed {
             Some(get_seed_words()?)
         } else {

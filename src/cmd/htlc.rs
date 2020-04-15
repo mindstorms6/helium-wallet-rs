@@ -8,6 +8,7 @@ use helium_api::{Client, Hnt, PendingTxnStatus};
 use helium_proto::{BlockchainTxnCreateHtlcV1, BlockchainTxnRedeemHtlcV1, Txn};
 use prettytable::Table;
 use structopt::StructOpt;
+use super::CmdRunner;
 
 #[derive(Debug, StructOpt)]
 /// Create or Redeem from an HTLC address
@@ -59,8 +60,8 @@ pub struct Redeem {
     hash: bool,
 }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         match self {
             Cmd::Create(cmd) => cmd.run(opts),
             Cmd::Redeem(cmd) => cmd.run(opts),
@@ -68,8 +69,8 @@ impl Cmd {
     }
 }
 
-impl Create {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Create {
+    fn run(&self, opts: Opts) -> Result {
         let password = get_password(false)?;
         let wallet = load_wallet(opts.files)?;
         let client = Client::new_with_base_url(api_url());
@@ -128,8 +129,8 @@ fn print_create_txn(txn: &BlockchainTxnCreateHtlcV1, status: &Option<PendingTxnS
     }
 }
 
-impl Redeem {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Redeem {
+    fn run(&self, opts: Opts) -> Result {
         let password = get_password(false)?;
         let wallet = load_wallet(opts.files)?;
         let keypair = wallet.to_keypair(password.as_bytes())?;

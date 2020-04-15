@@ -15,9 +15,9 @@ pub struct Cmd {
     #[structopt(long = "qr")]
     qr_code: bool,
 }
-
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+use super::CmdRunner;
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         let wallet = load_wallet(opts.files)?;
         if self.qr_code {
             let address = wallet.address()?;

@@ -5,13 +5,14 @@ use crate::{
 };
 use structopt::StructOpt;
 use prettytable::{format, Table};
+use super::CmdRunner;
 
 /// Verify an encypted wallet
 #[derive(Debug, StructOpt)]
 pub struct Cmd { }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         let password = get_password(false)?;
         let wallet = load_wallet(opts.files)?;
         let result = wallet.to_keypair(password.as_bytes());

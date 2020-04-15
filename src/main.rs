@@ -1,5 +1,5 @@
 use helium_wallet::{
-    cmd::{balance, create, hotspots, htlc, info, pay, verify, Opts},
+    cmd::{balance, create, CmdRunner, hotspots, htlc, info, pay, verify, Opts},
     result::Result,
 };
 use std::process;
@@ -34,13 +34,14 @@ fn main() {
 }
 
 fn run(cli: Cli) -> Result {
-    match cli.cmd {
-        Cmd::Info(cmd) => cmd.run(cli.opts),
-        Cmd::Verify(cmd) => cmd.run(cli.opts),
-        Cmd::Balance(cmd) => cmd.run(cli.opts),
-        Cmd::Hotspots(cmd) => cmd.run(cli.opts),
-        Cmd::Create(cmd) => cmd.run(cli.opts),
-        Cmd::Pay(cmd) => cmd.run(cli.opts),
-        Cmd::Htlc(cmd) => cmd.run(cli.opts),
-    }
+    let cmd: Box<dyn CmdRunner> = match cli.cmd {
+        Cmd::Info(cmd) => Box::new(cmd),
+        Cmd::Verify(cmd) => Box::new(cmd),
+        Cmd::Balance(cmd) => Box::new(cmd),
+        Cmd::Hotspots(cmd) => Box::new(cmd),
+        Cmd::Create(cmd) => Box::new(cmd),
+        Cmd::Pay(cmd) => Box::new(cmd),
+        Cmd::Htlc(cmd) => Box::new(cmd),
+    };
+    cmd.run(cli.opts)
 }

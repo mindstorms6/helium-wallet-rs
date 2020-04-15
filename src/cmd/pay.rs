@@ -9,6 +9,7 @@ use helium_proto::{BlockchainTxnPaymentV2, Payment, Txn};
 use prettytable::Table;
 use std::str::FromStr;
 use structopt::StructOpt;
+use super::CmdRunner;
 
 #[derive(Debug, StructOpt)]
 /// Send one or more payments to given addresses. Note that HNT only
@@ -28,8 +29,8 @@ pub struct Cmd {
     hash: bool,
 }
 
-impl Cmd {
-    pub fn run(&self, opts: Opts) -> Result {
+impl CmdRunner for Cmd {
+    fn run(&self, opts: Opts) -> Result {
         let password = get_password(false)?;
         let wallet = load_wallet(opts.files)?;
 
