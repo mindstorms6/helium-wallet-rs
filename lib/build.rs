@@ -19,7 +19,7 @@ fn read_wordlist(dir: Result<DirEntry>) -> Result<(OsString, Vec<String>)> {
 
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
-    let wordlist_paths = fs::read_dir(Path::new("src/mnemonic/wordlists")).unwrap();
+    let wordlist_paths = fs::read_dir(Path::new("mnemonic/wordlists")).unwrap();
     for path in wordlist_paths {
         let (lang, words) = read_wordlist(path).unwrap();
         let dest_path = Path::new(&out_dir).join(lang.clone()).with_extension(&"rs");

@@ -1,9 +1,15 @@
+#[macro_use]
+extern crate prettytable;
+
 use helium_wallet::{
-    cmd::{balance, create, hotspots, htlc, info, onboard, oui, pay, verify, Opts},
-    result::Result,
-};
+    keypair, mnemonic, staking, traits, wallet,
+    result};
 use std::process;
 use structopt::StructOpt;
+
+mod cmd;
+
+use cmd::{balance, create, hotspots, htlc, info, onboard, oui, pay, verify, Opts};
 
 #[derive(Debug, StructOpt)]
 pub struct Cli {
@@ -35,7 +41,7 @@ fn main() {
     }
 }
 
-fn run(cli: Cli) -> Result {
+fn run(cli: Cli) -> result::Result {
     match cli.cmd {
         Cmd::Info(cmd) => cmd.run(cli.opts),
         Cmd::Verify(cmd) => cmd.run(cli.opts),
