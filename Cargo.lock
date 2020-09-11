@@ -758,7 +758,6 @@ dependencies = [
 [[package]]
 name = "helium-api"
 version = "1.1.2"
-source = "git+https://github.com/helium/helium-api-rs?branch=lthiery/transactions-take-two#35d3d5be4a310ae650f646346828ef2fafc8eb7b"
 dependencies = [
  "base64 0.12.3",
  "bs58",
