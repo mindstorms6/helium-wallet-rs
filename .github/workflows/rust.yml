@@ -42,7 +42,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          helium-wallet-x86_64-linux.tar.gz
+          helium-wallet-${{ github.ref }}-x86_64-linux.tar.gz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -71,6 +71,6 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          helium-wallet-x86_64-macos.tar.gz
+          helium-wallet-${{ github.ref }}-x86_64-macos.tar.gz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
