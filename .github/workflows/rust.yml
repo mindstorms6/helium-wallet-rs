@@ -35,7 +35,7 @@ jobs:
         args: -- -Dclippy::all
 
     - name: Build
-      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release zcvf helium-wallet-${{ github.ref }}-x86_64-linux.tar.gz helium-wallet
+      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release zcvf ../../helium-wallet-${{ github.ref }}-x86_64-linux.tar.gz helium-wallet
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -64,7 +64,7 @@ jobs:
         access_token: ${{ github.token }}
 
     - name: Build
-      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release zcvf helium-wallet-x86_64-${{ github.ref }}-macos.tar.gz helium-wallet
+      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release zcvf ../../helium-wallet-x86_64-${{ github.ref }}-macos.tar.gz helium-wallet
 
     - name: Release
       uses: softprops/action-gh-release@v1
