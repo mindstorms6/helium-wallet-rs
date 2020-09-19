@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
       with:
@@ -35,7 +39,7 @@ jobs:
         args: -- -Dclippy::all
 
     - name: Build
-      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release -zcvf helium-wallet-${{ github.ref }}-x86_64-linux.tar.gz helium-wallet
+      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release -zcvf helium-wallet-${{ steps.get_version.outputs.VERSION }}-x86_64-linux.tar.gz helium-wallet
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -50,6 +54,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
       with:
@@ -64,7 +71,7 @@ jobs:
         access_token: ${{ github.token }}
 
     - name: Build
-      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release -zcvf helium-wallet-x86_64-${{ github.ref }}-macos.tar.gz helium-wallet
+      run: cargo build --all --release && strip target/release/helium-wallet && tar -C target/release -zcvf helium-wallet-x86_64-${{ steps.get_version.outputs.VERSION }}-macos.tar.gz helium-wallet
 
     - name: Release
       uses: softprops/action-gh-release@v1
