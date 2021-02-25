@@ -35,7 +35,6 @@ bytes = "0"
 pbkdf2 = {version = "0.3.0", default-features=false }
 aead = "0.1.1"
 aes-gcm = "0.1.0"
-shamirsecretsharing = {version="0.1.4", features=["have_libsodium"]}
 lazy_static = "1"
 regex = "1"
 qr2term = "0.1"

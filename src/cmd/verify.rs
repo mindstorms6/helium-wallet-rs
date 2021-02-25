@@ -29,7 +29,7 @@ pub fn print_result(wallet: &Wallet, result: bool, format: OutputFormat) -> Resu
         OutputFormat::Json => {
             let table = json!({
                 "address": address,
-                "sharded": wallet.is_sharded(),
+                // "sharded": wallet.is_sharded(),
                 "verify": result,
                 "pwhash": wallet.pwhash().to_string()
             });

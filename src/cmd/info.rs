@@ -39,7 +39,7 @@ fn print_wallet(wallet: &Wallet, account: &Account, format: OutputFormat) -> Res
         }
         OutputFormat::Json => {
             let table = json!({
-                "sharded": wallet.is_sharded(),
+                // "sharded": wallet.is_sharded(),
                 "pwhash": wallet.pwhash().to_string(),
                 "account": account,
             });

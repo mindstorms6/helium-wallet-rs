@@ -62,11 +62,11 @@ fn load_wallet(files: Vec<PathBuf>) -> Result<Wallet> {
         None => return Err("At least one wallet file expected".into()),
     };
 
-    for path in files_iter {
-        let mut reader = fs::File::open(path)?;
-        let w = Wallet::read(&mut reader)?;
-        first_wallet.absorb_shard(&w)?;
-    }
+    // for path in files_iter {
+    //     let mut reader = fs::File::open(path)?;
+    //     let w = Wallet::read(&mut reader)?;
+    //     first_wallet.absorb_shard(&w)?;
+    // }
 
     Ok(first_wallet)
 }

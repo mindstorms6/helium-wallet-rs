@@ -90,44 +90,6 @@ impl Wallet {
         self.format.pwhash()
     }
 
-    fn mut_sharded_format(&mut self) -> Result<&mut format::Sharded> {
-        match &mut self.format {
-            Format::Sharded(format) => Ok(format),
-            _ => Err("Wallet not sharded".into()),
-        }
-    }
-
-    fn sharded_format(&self) -> Result<&format::Sharded> {
-        match &self.format {
-            Format::Sharded(format) => Ok(format),
-            _ => Err("Wallet not sharded".into()),
-        }
-    }
-
-    pub fn is_sharded(&self) -> bool {
-        self.sharded_format().is_ok()
-    }
-
-    pub fn shards(&self) -> Result<Vec<Wallet>> {
-        let format = self.sharded_format()?;
-        let mut wallets = vec![];
-        for shard in format.shards() {
-            wallets.push(Self {
-                format: Format::Sharded(shard),
-                encrypted: self.encrypted.clone(),
-                ..*self
-            })
-        }
-        Ok(wallets)
-    }
-
-    pub fn absorb_shard(&mut self, shard: &Wallet) -> Result {
-        let format = self.mut_sharded_format()?;
-        let other_format = shard.sharded_format()?;
-
-        format.absorb(&other_format)
-    }
-
     fn read_pwhash(reader: &mut dyn io::Read) -> Result<PWHash> {
         let kind = reader.read_u8()?;
         match kind {
@@ -142,8 +104,8 @@ impl Wallet {
         let mut format = match kind {
             WALLET_KIND_BASIC_V1 => Format::basic(PWHash::pbkdf2_default()),
             WALLET_KIND_BASIC_V2 => Format::basic(Self::read_pwhash(reader)?),
-            WALLET_KIND_SHARDED_V1 => Format::sharded_default(PWHash::pbkdf2_default()),
-            WALLET_KIND_SHARDED_V2 => Format::sharded_default(Self::read_pwhash(reader)?),
+            // WALLET_KIND_SHARDED_V1 => Format::sharded_default(PWHash::pbkdf2_default()),
+            // WALLET_KIND_SHARDED_V2 => Format::sharded_default(Self::read_pwhash(reader)?),
             _ => return Err(format!("Invalid wallet kind {}", kind).into()),
         };
         format.read(reader)?;
@@ -176,7 +138,6 @@ impl Wallet {
     pub fn write(&self, writer: &mut dyn io::Write) -> Result {
         let kind = match self.format {
             Format::Basic(_) => WALLET_KIND_BASIC_V2,
-            Format::Sharded(_) => WALLET_KIND_SHARDED_V2,
         };
         writer.write_u16::<LittleEndian>(kind)?;
         Self::write_pwhash(self.format.pwhash(), writer)?;
@@ -211,19 +172,19 @@ mod tests {
         assert_eq!(from_keypair, to_keypair);
     }
 
-    #[test]
-    fn rountrip_sharded() {
-        let from_keypair = Keypair::gen_keypair();
-        let format = format::Sharded {
-            key_share_count: 5,
-            recovery_threshold: 3,
-            pwhash: PWHash::argon2id13_default(),
-            key_shares: vec![],
-        };
-        let password = b"passsword";
-        let wallet = Wallet::encrypt(&from_keypair, password, Format::Sharded(format))
-            .expect("wallet creation");
-        let to_keypair = wallet.decrypt(password).expect("wallet to keypair");
-        assert_eq!(from_keypair, to_keypair);
-    }
+    // #[test]
+    // fn rountrip_sharded() {
+    //     let from_keypair = Keypair::gen_keypair();
+    //     let format = format::Sharded {
+    //         key_share_count: 5,
+    //         recovery_threshold: 3,
+    //         pwhash: PWHash::argon2id13_default(),
+    //         key_shares: vec![],
+    //     };
+    //     let password = b"passsword";
+    //     let wallet = Wallet::encrypt(&from_keypair, password, Format::Sharded(format))
+    //         .expect("wallet creation");
+    //     let to_keypair = wallet.decrypt(password).expect("wallet to keypair");
+    //     assert_eq!(from_keypair, to_keypair);
+    // }
 }

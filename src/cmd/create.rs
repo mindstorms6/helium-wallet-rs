@@ -1,5 +1,5 @@
 use crate::{
-    cmd::{get_file_extension, get_password, get_seed_words, verify, Opts},
+    cmd::{get_password, get_seed_words, verify, Opts},
     format::{self, Format},
     keypair::{Keypair, Seed},
     mnemonic::mnemonic_to_entropy,
@@ -14,7 +14,6 @@ use structopt::StructOpt;
 /// Create a new wallet
 pub enum Cmd {
     Basic(Basic),
-    Sharded(Sharded),
 }
 
 #[derive(Debug, StructOpt)]
@@ -61,7 +60,6 @@ impl Cmd {
     pub fn run(&self, opts: Opts) -> Result {
         match self {
             Cmd::Basic(cmd) => cmd.run(opts),
-            Cmd::Sharded(cmd) => cmd.run(opts),
         }
     }
 }
@@ -81,36 +79,6 @@ impl Basic {
         let wallet = Wallet::encrypt(&keypair, password.as_bytes(), Format::Basic(format))?;
         let mut writer = open_output_file(&self.output, !self.force)?;
         wallet.write(&mut writer)?;
-        verify::print_result(&wallet, true, opts.format)
-    }
-}
-
-impl Sharded {
-    pub fn run(&self, opts: Opts) -> Result {
-        let seed_words = if self.seed {
-            Some(get_seed_words()?)
-        } else {
-            None
-        };
-        let password = get_password(true)?;
-
-        let keypair = gen_keypair(seed_words)?;
-        let format = format::Sharded {
-            key_share_count: self.key_share_count,
-            recovery_threshold: self.recovery_threshold,
-            pwhash: PWHash::argon2id13_default(),
-            key_shares: vec![],
-        };
-        let wallet = Wallet::encrypt(&keypair, password.as_bytes(), Format::Sharded(format))?;
-
-        let extension = get_file_extension(&self.output);
-        for (i, shard) in wallet.shards()?.iter().enumerate() {
-            let mut filename = self.output.clone();
-            let share_extension = format!("{}.{}", extension, (i + 1).to_string());
-            filename.set_extension(share_extension);
-            let mut writer = open_output_file(&filename, !self.force)?;
-            shard.write(&mut writer)?;
-        }
         verify::print_result(&wallet, true, opts.format)
     }
 }
