@@ -35,7 +35,7 @@ impl Cmd {
 fn print_wallet(wallet: &Wallet, account: &Account, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            
+            Ok(())
         }
         OutputFormat::Json => {
             let table = json!({

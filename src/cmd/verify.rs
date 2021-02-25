@@ -24,7 +24,7 @@ pub fn print_result(wallet: &Wallet, result: bool, format: OutputFormat) -> Resu
     let address = wallet.address().unwrap_or_else(|_| "unknown".to_string());
     match format {
         OutputFormat::Table => {
-            
+            Ok(())
         }
         OutputFormat::Json => {
             let table = json!({

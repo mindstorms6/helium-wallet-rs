@@ -149,23 +149,9 @@ fn print_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            ptable!(
-                ["Key", "Value"],
-                ["Requested OUI", txn.oui + 1],
-                ["Reqeuested Subnet Size", txn.requested_subnet_size],
-                [
-                    "Addresses",
-                    txn.addresses
-                        .clone()
-                        .into_iter()
-                        .map(|v| PubKeyBin::from_vec(&v).to_string())
-                        .collect::<Vec<String>>()
-                        .join("\n")
-                ],
-                ["Hash", status_str(status)]
-            );
+            
 
-            print_footer(status)
+            Ok(())
         }
         OutputFormat::Json => {
             let table = json!({

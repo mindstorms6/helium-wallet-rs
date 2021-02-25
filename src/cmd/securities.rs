@@ -78,20 +78,7 @@ fn print_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            ptable!(
-                ["Payee", "Amount"],
-                [
-                    PubKeyBin::from_vec(&txn.payee).to_b58().unwrap(),
-                    txn.amount
-                ]
-            );
-            ptable!(
-                ["Key", "Value"],
-                ["Nonce", txn.nonce],
-                ["Hash", status_str(status)]
-            );
-
-            print_footer(status)
+            Ok(())
         }
         OutputFormat::Json => {
             let transfer = json!({

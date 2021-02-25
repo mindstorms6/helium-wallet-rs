@@ -116,17 +116,7 @@ fn print_create_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            ptable!(
-                ["Key", "Value"],
-                ["Address", PubKeyBin::from_vec(&txn.address).to_b58()?],
-                ["Payee", PubKeyBin::from_vec(&txn.payee).to_b58()?],
-                ["Amount", txn.amount],
-                ["Hashlock", hex::encode(&txn.hashlock)],
-                ["Timelock", txn.timelock],
-                ["Nonce", txn.nonce],
-                ["Hash", status_str(status)]
-            );
-            print_footer(status)
+            Ok(())
         }
         OutputFormat::Json => {
             let table = json!({
@@ -180,14 +170,7 @@ fn print_redeem_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            ptable!(
-                ["Key", "Value"],
-                ["Payee", PubKeyBin::from_vec(&txn.payee).to_b58()?],
-                ["Address", PubKeyBin::from_vec(&txn.address).to_b58()?],
-                ["Preimage", std::str::from_utf8(&txn.preimage)?],
-                ["Hash", status_str(status)]
-            );
-            print_footer(status)
+            Ok(())
         }
         OutputFormat::Json => {
             let table = json!({

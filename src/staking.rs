@@ -50,7 +50,7 @@ impl Client {
         let response: serde_json::Value = self
             .client
             .get(&request_url)
-            .send()?
+            .send()
             .error_for_status()?
             .json()?;
         response["data"]["publicAddress"]

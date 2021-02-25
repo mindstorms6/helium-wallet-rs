@@ -83,7 +83,7 @@ fn print_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            
+            Ok(())
         }
         OutputFormat::Json => {
             let mut payments = Vec::with_capacity(txn.payments.len());

@@ -36,20 +36,21 @@ pub struct List {
 
 impl List {
     pub fn run(&self, opts: Opts) -> Result {
-        let client = Client::new_with_base_url(api_url());
-        let mut results: Vec<(String, Result<Vec<Hotspot>>)> =
-            Vec::with_capacity(self.addresses.len());
-        for address in collect_addresses(opts.files, self.addresses.clone())? {
-            results.push((address.to_string(), client.get_hotspots(&address)));
-        }
-        print_results(results, opts.format)
+        Ok(())
+        // let client = Client::new_with_base_url(api_url());
+        // let mut results: Vec<(String, Result<Vec<Hotspot>>)> =
+        //     Vec::with_capacity(self.addresses.len());
+        // for address in collect_addresses(opts.files, self.addresses.clone())? {
+        //     results.push((address.to_string(), client.get_hotspots(&address)));
+        // }
+        // print_results(results, opts.format)
     }
 }
 
 fn print_results(results: Vec<(String, Result<Vec<Hotspot>>)>, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            
+            Ok(())
         }
         OutputFormat::Json => {
             let mut table = Vec::with_capacity(results.len());

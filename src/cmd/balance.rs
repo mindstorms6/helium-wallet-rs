@@ -23,14 +23,15 @@ impl Cmd {
         for address in collect_addresses(opts.files, self.addresses.clone())? {
             results.push((address.to_string(), client.get_account(&address)));
         }
-        print_results(results, opts.format)
+        Ok(())
+        // print_results(results, opts.format)
     }
 }
 
 fn print_results(results: Vec<(String, Result<Account>)>, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            
+            Ok(())
         }
         OutputFormat::Json => {
             let mut rows = Vec::with_capacity(results.len());

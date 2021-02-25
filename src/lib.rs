@@ -10,6 +10,5 @@ pub mod keypair;
 pub mod mnemonic;
 pub mod pwhash;
 pub mod result;
-pub mod staking;
 pub mod traits;
 pub mod wallet;

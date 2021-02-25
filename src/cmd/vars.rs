@@ -64,7 +64,7 @@ impl Current {
 
 fn get_vars() -> Result<serde_json::Map<String, serde_json::Value>> {
     let client = Client::new_with_base_url(api_url());
-    client.get_vars()
+    Ok(client.get_vars()?)
 }
 
 impl Create {
