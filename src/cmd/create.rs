@@ -139,7 +139,7 @@ impl Sharded {
     }
 }
 
-fn gen_keypair(tag: KeyTag, seed_words: Option<Vec<String>>) -> Result<Keypair> {
+pub fn gen_keypair(tag: KeyTag, seed_words: Option<Vec<String>>) -> Result<Keypair> {
     match seed_words {
         Some(words) => {
             let entropy = mnemonic_to_entropy(words)?;
