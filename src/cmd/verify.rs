@@ -1,9 +1,9 @@
 use crate::{
-    cmd::{get_password, load_wallet, print_json, print_table, Opts, OutputFormat},
+    cmd::{get_password, load_wallet, print_json, Opts, OutputFormat},
     result::Result,
     wallet::Wallet,
 };
-use prettytable::{format, Table};
+// use prettytable::{format, Table};
 use serde_json::json;
 use structopt::StructOpt;
 
@@ -24,11 +24,7 @@ pub fn print_result(wallet: &Wallet, result: bool, format: OutputFormat) -> Resu
     let address = wallet.address().unwrap_or_else(|_| "unknown".to_string());
     match format {
         OutputFormat::Table => {
-            let mut table = Table::new();
-            table.set_format(*format::consts::FORMAT_NO_LINESEP_WITH_TITLE);
-            table.set_titles(row!["Address", "Sharded", "Verify", "PWHash"]);
-            table.add_row(row![address, wallet.is_sharded(), result, wallet.pwhash()]);
-            print_table(&table)
+            
         }
         OutputFormat::Json => {
             let table = json!({

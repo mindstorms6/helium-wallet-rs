@@ -1,9 +1,9 @@
 use crate::{
-    cmd::{api_url, collect_addresses, print_json, print_table, Opts, OutputFormat},
+    cmd::{api_url, collect_addresses, print_json, Opts, OutputFormat},
     result::Result,
 };
 use helium_api::{Client, Hotspot};
-use prettytable::{format, Table};
+// use prettytable::{format, Table};
 use serde_json::json;
 use structopt::StructOpt;
 
@@ -49,40 +49,7 @@ impl List {
 fn print_results(results: Vec<(String, Result<Vec<Hotspot>>)>, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            let mut table = Table::new();
-            table.set_format(*format::consts::FORMAT_NO_LINESEP_WITH_TITLE);
-            table.set_titles(row!["Address", "Name", "Location", "City", "State"]);
-
-            for (address, result) in results {
-                #[allow(clippy::unused_unit)]
-                match result {
-                    Ok(hotspots) if hotspots.is_empty() => {
-                        table.add_row(row![address, H5 -> "No hotspots found".to_string()]);
-                        ()
-                    }
-                    Ok(hotspots) => {
-                        for hotspot in hotspots {
-                            table.add_row(row![
-                                hotspot.address,
-                                hotspot.name.unwrap_or_else(|| "unknown".to_string()),
-                                hotspot.location.unwrap_or_else(|| "uknnown".to_string()),
-                                hotspot
-                                    .geocode
-                                    .short_city
-                                    .unwrap_or_else(|| "unknown".to_string()),
-                                hotspot
-                                    .geocode
-                                    .short_state
-                                    .unwrap_or_else(|| "unknown".to_string())
-                            ]);
-                        }
-                    }
-                    Err(err) => {
-                        table.add_row(row![address, H5 -> err.to_string()]);
-                    }
-                };
-            }
-            print_table(&table)
+            
         }
         OutputFormat::Json => {
             let mut table = Vec::with_capacity(results.len());

@@ -1,9 +1,9 @@
 use crate::{
-    cmd::{api_url, collect_addresses, print_json, print_table, Opts, OutputFormat},
+    cmd::{api_url, collect_addresses, print_json, Opts, OutputFormat},
     result::Result,
 };
 use helium_api::{Account, Client, Hnt, Hst};
-use prettytable::{format, Table};
+// use prettytable::{format, Table};
 use serde_json::json;
 use structopt::StructOpt;
 
@@ -30,26 +30,7 @@ impl Cmd {
 fn print_results(results: Vec<(String, Result<Account>)>, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            let mut table = Table::new();
-            table.set_format(*format::consts::FORMAT_NO_LINESEP_WITH_TITLE);
-            table.set_titles(row![
-                "Address",
-                "Balance",
-                "Data Credits",
-                "Security Tokens"
-            ]);
-            for (address, result) in results {
-                match result {
-                    Ok(account) => table.add_row(row![
-                        address,
-                        Hnt::from_bones(account.balance),
-                        account.dc_balance,
-                        Hst::from_bones(account.sec_balance)
-                    ]),
-                    Err(err) => table.add_row(row![address, H3 -> err.to_string()]),
-                };
-            }
-            print_table(&table)
+            
         }
         OutputFormat::Json => {
             let mut rows = Vec::with_capacity(results.len());

@@ -1,6 +1,6 @@
 use crate::{
     cmd::{
-        api_url, get_password, get_txn_fees, load_wallet, print_footer, print_json, print_table,
+        api_url, get_password, get_txn_fees, load_wallet, print_footer, print_json,
         status_json, status_str, Opts, OutputFormat,
     },
     keypair::PubKeyBin,
@@ -8,7 +8,6 @@ use crate::{
     traits::{Sign, TxnEnvelope, TxnFee, B58, B64},
 };
 use helium_api::{BlockchainTxn, BlockchainTxnPaymentV2, Client, Hnt, Payment, PendingTxnStatus};
-use prettytable::Table;
 use serde_json::json;
 use std::str::FromStr;
 use structopt::StructOpt;
@@ -84,24 +83,7 @@ fn print_txn(
 ) -> Result {
     match format {
         OutputFormat::Table => {
-            let mut table = Table::new();
-            table.add_row(row!["Payee", "Amount"]);
-            for payment in txn.payments.clone() {
-                table.add_row(row![
-                    PubKeyBin::from_vec(&payment.payee).to_b58().unwrap(),
-                    Hnt::from_bones(payment.amount)
-                ]);
-            }
-            print_table(&table)?;
-
-            ptable!(
-                ["Key", "Value"],
-                ["Fee", txn.fee],
-                ["Nonce", txn.nonce],
-                ["Hash", status_str(status)]
-            );
-
-            print_footer(status)
+            
         }
         OutputFormat::Json => {
             let mut payments = Vec::with_capacity(txn.payments.len());

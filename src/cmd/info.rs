@@ -1,10 +1,10 @@
 use crate::{
-    cmd::{api_url, load_wallet, print_json, print_table, Opts, OutputFormat},
+    cmd::{api_url, load_wallet, print_json, Opts, OutputFormat},
     result::Result,
     wallet::Wallet,
 };
 use helium_api::{Account, Client, Hnt, Hst};
-use prettytable::Table;
+// use prettytable::Table;
 use qr2term::print_qr;
 use serde_json::json;
 use structopt::StructOpt;
@@ -35,18 +35,7 @@ impl Cmd {
 fn print_wallet(wallet: &Wallet, account: &Account, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Table => {
-            let mut table = Table::new();
-            table.add_row(row!["Key", "Value"]);
-            table.add_row(row!["Address", account.address]);
-            table.add_row(row!["Sharded", wallet.is_sharded()]);
-            table.add_row(row!["PWHash", wallet.pwhash()]);
-            table.add_row(row!["Balance", Hnt::from_bones(account.balance)]);
-            table.add_row(row!["DC Balance", account.dc_balance]);
-            table.add_row(row![
-                "Securities Balance",
-                Hst::from_bones(account.sec_balance)
-            ]);
-            print_table(&table)
+            
         }
         OutputFormat::Json => {
             let table = json!({

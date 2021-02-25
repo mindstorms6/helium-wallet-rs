@@ -179,10 +179,6 @@ pub fn print_json<T: ?Sized + serde::Serialize>(value: &T) -> Result {
     Ok(())
 }
 
-pub fn print_table(table: &prettytable::Table) -> Result {
-    table.printstd();
-    Ok(())
-}
 
 pub fn status_str(status: &Option<PendingTxnStatus>) -> &str {
     status.as_ref().map_or("none", |s| &s.hash)
