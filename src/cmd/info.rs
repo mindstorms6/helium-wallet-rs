@@ -5,7 +5,6 @@ use crate::{
 };
 use helium_api::{Account, Client, Hnt, Hst};
 // use prettytable::Table;
-use qr2term::print_qr;
 use serde_json::json;
 use structopt::StructOpt;
 
@@ -20,15 +19,11 @@ pub struct Cmd {
 impl Cmd {
     pub fn run(&self, opts: Opts) -> Result {
         let wallet = load_wallet(opts.files)?;
-        if self.qr_code {
-            let address = wallet.address()?;
-            print_qr(&address)?;
-            Ok(())
-        } else {
-            let client = Client::new_with_base_url(api_url());
-            let account = client.get_account(&wallet.address()?)?;
-            print_wallet(&wallet, &account, opts.format)
-        }
+        
+        let client = Client::new_with_base_url(api_url());
+        let account = client.get_account(&wallet.address()?)?;
+        print_wallet(&wallet, &account, opts.format)
+        
     }
 }
 

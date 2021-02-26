@@ -3,7 +3,6 @@ use crate::{
     result::Result,
 };
 use helium_api::Hnt;
-use qr2term::print_qr;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -81,7 +80,6 @@ fn print_request(request: &serde_json::Value, format: OutputFormat) -> Result {
     match format {
         OutputFormat::Json => print_json(request),
         OutputFormat::Table => {
-            print_qr(&serde_json::to_string(&request)?)?;
             Ok(())
         }
     }
